@@ -40,7 +40,7 @@ class _ChartCandlePainter {
       var dashLineHeight = item.value2.currentSize.height;
       if (dashLineHeight > 0) {
         var startY = item.value2.currentPos.dy;
-        final startX = item.value2.currentPos.dx;
+        final startX = item.value2.currentPos.dx + 0.5;
         final dashPaint = Paint()
           ..color = item.value2.currentColor
           ..strokeWidth = 1;
