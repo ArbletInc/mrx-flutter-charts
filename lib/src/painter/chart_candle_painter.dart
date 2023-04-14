@@ -1,5 +1,7 @@
 part of 'chart_painter.dart';
 
+const _dashSpace = 2;
+
 /// Layer painter for candle.
 class _ChartCandlePainter {
   const _ChartCandlePainter._();
@@ -25,21 +27,30 @@ class _ChartCandlePainter {
         xValue: xValue,
         yValue: yValue,
       );
-      canvas
-        ..drawRRect(
-          RRect.fromRectAndRadius(
-            item.value1.currentPos & item.value1.currentSize,
-            Radius.circular(layer.settings.radius),
-          ),
-          Paint()..color = item.value1.currentColor,
-        )
-        ..drawRRect(
-          RRect.fromRectAndRadius(
-            item.value2.currentPos & item.value2.currentSize,
-            Radius.circular(layer.settings.radius),
-          ),
-          Paint()..color = item.value2.currentColor,
-        );
+
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          item.value1.currentPos & item.value1.currentSize,
+          Radius.circular(layer.settings.radius),
+        ),
+        Paint()..color = item.value1.currentColor,
+      );
+
+      // 点線に変更.
+      var dashLineHeight = item.value2.currentSize.height;
+      if (dashLineHeight > 0) {
+        var startY = item.value2.currentPos.dy;
+        final startX = item.value2.currentPos.dx;
+        final dashPaint = Paint()
+          ..color = item.value2.currentColor
+          ..strokeWidth = 1;
+        while (dashLineHeight > 0) {
+          canvas.drawLine(Offset(startX, startY),
+              Offset(startX, startY + _dashSpace), dashPaint);
+          startY += _dashSpace * 2;
+          dashLineHeight -= _dashSpace * 2;
+        }
+      }
     }
   }
 
