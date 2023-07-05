@@ -8,8 +8,11 @@ class ChartAxisSettings {
   /// The y of the axis.
   final ChartAxisSettingsAxis y;
 
+  final double? yLabelWidth;
+
   const ChartAxisSettings({
     required this.x,
     required this.y,
+    this.yLabelWidth
   });
 }

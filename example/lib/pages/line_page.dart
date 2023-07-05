@@ -103,6 +103,7 @@ class _LinePageState extends State<LinePage> {
         settings: const ChartLineSettings(
           color: Color(0xFF8043F9),
           thickness: 4.0,
+          interval: 0
         ),
       ),
       ChartTooltipLayer(

@@ -8,8 +8,11 @@ class ChartLineSettings {
   /// The thickness of lines.
   final double thickness;
 
+  final int interval;
+
   const ChartLineSettings({
     required this.color,
     required this.thickness,
+    required this.interval
   });
 }

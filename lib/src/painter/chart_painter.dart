@@ -190,14 +190,16 @@ class ChartPainter extends CustomPainter {
     double maxAxisYWidth = 0.0;
     List<TextPainter> axisXTextPainters = [];
     List<TextPainter> axisYTextPainters = [];
-    if (axisLayer is ChartAxisLayer) {
+    if (axisLayer is ChartAxisLayer && axisLayer.settings.yLabelWidth != null) {
       axisXTextPainters = _generateTextPainters(
           axisLayer.x.items, axisLayer.settings.x.textStyle);
       axisYTextPainters = _generateTextPainters(
           axisLayer.y.items, axisLayer.settings.y.textStyle);
+      maxAxisYWidth = axisLayer.settings.yLabelWidth!;
+    } else {
+      maxAxisYWidth = axisYTextPainters.biggestWidth;
     }
     maxAxisXHeight = axisXTextPainters.biggestHeight;
-    maxAxisYWidth = axisYTextPainters.biggestWidth;
     final double axisXTextPainterFirstWidth =
         axisXTextPainters.firstWidthOrZero;
     final double axisXTextPainterLastWidth = axisXTextPainters.lastWidthOrZero;

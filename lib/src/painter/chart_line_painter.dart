@@ -126,28 +126,34 @@ class _ChartLinePainter {
       ..style = PaintingStyle.stroke
       ..color = layer.settings.color;
     late Offset previousPos;
+    final interval = layer.settings.interval + 1;
     for (int i = 0; i < layer.items.length; i++) {
       final ChartLineDataItem lineItem = layer.items[i];
       final Offset currentPos = lineItem.currentValuePos;
       if (i < 1) {
         curvePath.moveTo(currentPos.dx, currentPos.dy);
       } else {
-        final Offset controlPos = Offset(
-          previousPos.dx + (currentPos.dx - previousPos.dx).half,
-          previousPos.dy,
-        );
-        final Offset controlPos2 = Offset(
-          currentPos.dx + (previousPos.dx - currentPos.dx).half,
-          currentPos.dy,
-        );
-        curvePath.cubicTo(
-          controlPos.dx,
-          controlPos.dy,
-          controlPos2.dx,
-          controlPos2.dy,
-          currentPos.dx,
-          currentPos.dy,
-        );
+        if (currentPos.dx - previousPos.dx < interval) {
+          // 間隔が規定より空いていたら、線を途切れさせる.
+          final Offset controlPos = Offset(
+            previousPos.dx + (currentPos.dx - previousPos.dx).half,
+            previousPos.dy,
+          );
+          final Offset controlPos2 = Offset(
+            currentPos.dx + (previousPos.dx - currentPos.dx).half,
+            currentPos.dy,
+          );
+          curvePath.cubicTo(
+            controlPos.dx,
+            controlPos.dy,
+            controlPos2.dx,
+            controlPos2.dy,
+            currentPos.dx,
+            currentPos.dy,
+          );
+        } else {
+          curvePath.moveTo(currentPos.dx, currentPos.dy);
+        }
       }
       previousPos = currentPos;
     }
