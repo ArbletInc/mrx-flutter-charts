@@ -135,22 +135,28 @@ class _ChartLinePainter {
       } else {
         if (currentPos.dx - previousPos.dx < interval) {
           // 間隔が規定より空いていたら、線を途切れさせる.
-          final Offset controlPos = Offset(
-            previousPos.dx + (currentPos.dx - previousPos.dx).half,
-            previousPos.dy,
-          );
-          final Offset controlPos2 = Offset(
-            currentPos.dx + (previousPos.dx - currentPos.dx).half,
-            currentPos.dy,
-          );
-          curvePath.cubicTo(
-            controlPos.dx,
-            controlPos.dy,
-            controlPos2.dx,
-            controlPos2.dy,
-            currentPos.dx,
-            currentPos.dy,
-          );
+          if (layer.settings.useStraightLine) {
+            // 直線で描画
+            curvePath.lineTo(currentPos.dx, currentPos.dy);
+          } else {
+            // 曲線で描画
+            final Offset controlPos = Offset(
+              previousPos.dx + (currentPos.dx - previousPos.dx).half,
+              previousPos.dy,
+            );
+            final Offset controlPos2 = Offset(
+              currentPos.dx + (previousPos.dx - currentPos.dx).half,
+              currentPos.dy,
+            );
+            curvePath.cubicTo(
+              controlPos.dx,
+              controlPos.dy,
+              controlPos2.dx,
+              controlPos2.dy,
+              currentPos.dx,
+              currentPos.dy,
+            );
+          }
         } else {
           curvePath.moveTo(currentPos.dx, currentPos.dy);
         }

@@ -10,9 +10,13 @@ class ChartLineSettings {
 
   final int interval;
 
+  /// Whether to use straight lines instead of curved lines.
+  final bool useStraightLine;
+
   const ChartLineSettings({
     required this.color,
     required this.thickness,
-    required this.interval
+    required this.interval,
+    this.useStraightLine = false,
   });
 }
